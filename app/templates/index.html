@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevOps Task Manager</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+</head>
+
+<body>
+
+    <main class="container">
+
+        <h1>DevOps Task Manager</h1>
+
+        <form action="/add" method="POST" class="task-form">
+            <input
+                type="text"
+                name="title"
+                placeholder="Enter a task..."
+                required
+            >
+
+            <button type="submit">Add Task</button>
+        </form>
+
+        <section class="tasks">
+
+            {% for task in tasks %}
+
+                <div class="task">
+
+                    <span class="{% if task.completed %}completed{% endif %}">
+                        {{ task.title }}
+                    </span>
+
+                    <div class="actions">
+
+                        <form
+                            action="{{ url_for('complete_task', task_id=task.id) }}"
+                            method="POST"
+                        >
+                            <button type="submit">
+                                {% if task.completed %}
+                                    Undo
+                                {% else %}
+                                    Complete
+                                {% endif %}
+                            </button>
+                        </form>
+
+                        <form
+                            action="{{ url_for('delete_task', task_id=task.id) }}"
+                            method="POST"
+                        >
+                            <button type="submit">Delete</button>
+                        </form>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </section>
+
+    </main>
+
+</body>
+</html>
