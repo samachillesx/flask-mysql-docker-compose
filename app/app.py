@@ -104,5 +104,10 @@ def health():
         app.logger.exception("Health check failed")
         return {"status": "unhealthy", "database": "unavailable"}, 503
 
+# Use this for local development
+# if __name__ == "__main__":
+#     app.run(host="0.0.0.0", port=5000, debug=True)
+
+#Use this for production server(WSGI server)
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=False)
