@@ -68,6 +68,8 @@ Configure inbound rules according to the services exposed by the deployment.
 
 Do not create public inbound rules for MySQL port `3306` or Flask port `5000`.
 
+![Network Config](./screenshots/network-config.png)
+
 ### 1.3 Connect to EC2
 
 From your local terminal, connect using the downloaded private key:
@@ -78,22 +80,22 @@ chmod 400 your-key.pem
 ssh -i your-key.pem ec2-user@EC2_PUBLIC_IP
 ```
 
-Replace `your-key.pem` and `EC2_PUBLIC_IP` with your actual key filename and instance public IP address.
+![SSH Access](./screenshots/ssh-access.png)
 
 ## Step 2: Install Dependencies on EC2
 
-The commands below target Amazon Linux 2023.
+The commands below target Ubuntu 22.0 LTS.
 
 ### 2.1 Update System Packages
 
 ```bash
-sudo dnf update -y
+sudo apt update && sudo apt upgrade -y
 ```
 
-### 2.2 Install Git, Docker, and Nginx
+### 2.2 Install Git, Docker, Docker Compose, and Nginx
 
 ```bash
-sudo dnf install -y git docker nginx
+sudo apt install -y git docker.io docker-compose-v2 nginx
 ```
 
 Verify the Git and Docker installations:
@@ -101,15 +103,8 @@ Verify the Git and Docker installations:
 ```bash
 git --version
 docker --version
-```
-
-Check whether the Docker Compose plugin is available:
-
-```bash
 docker compose version
 ```
-
-If the Compose plugin is missing, install it using the supported installation procedure for your Amazon Linux 2023 environment.
 
 ### 2.3 Start and Enable Docker
 
@@ -162,7 +157,7 @@ sudo systemctl status nginx
 Clone the project from GitHub:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/flask-mysql-docker-compose.git
+git clone https://github.com/samachillesx/flask-mysql-docker-compose.git
 ```
 
 Move into the project directory:
@@ -170,8 +165,6 @@ Move into the project directory:
 ```bash
 cd flask-mysql-docker-compose
 ```
-
-Replace `YOUR_USERNAME` with your GitHub username.
 
 ## Step 4: Configure Environment Variables
 
@@ -184,7 +177,7 @@ cp .env.example .env
 Edit it:
 
 ```bash
-nano .env
+vim .env
 ```
 
 Example configuration:
@@ -300,6 +293,8 @@ volumes:
   mysql_data:
 ```
 
+**Note:** There are two Compose files, one for development and another for production; use depending on the environment.
+
 ### Key Configuration Decisions
 
 **Service communication:** The Flask application connects to MySQL using the Compose service hostname `mysql`.
@@ -332,6 +327,8 @@ Check the running containers:
 docker compose ps
 ```
 
+![Container Build](./screenshots/container-build.png)
+
 View application logs:
 
 ```bash
@@ -357,7 +354,7 @@ sudo nginx -T
 For an Nginx installation using `/etc/nginx/conf.d/`, create a configuration file:
 
 ```bash
-sudo nano /etc/nginx/conf.d/flask-app.conf
+sudo vim /etc/nginx/conf.d/flask-app.conf
 ```
 
 Example configuration:
@@ -418,7 +415,7 @@ Open the following URL in a browser:
 http://EC2_PUBLIC_IP
 ```
 
-Replace `EC2_PUBLIC_IP` with the instance's actual public IPv4 address.
+![Live App](./screenshots/live-app.png)
 
 **Deployment result:** The Flask application was successfully deployed to AWS EC2 and accessed through its public IP address using Nginx as a reverse proxy.
 
@@ -436,18 +433,6 @@ Open the application again and confirm that existing tasks remain available.
 The named volume preserves the MySQL data when containers are removed and recreated, as long as the volume itself is retained.
 
 Avoid `docker compose down -v` during this test because it removes Compose-managed named volumes.
-
-## Troubleshooting
-
-| Symptom | Investigation |
-|---|---|
-| Nginx welcome page appears | Inspect active Nginx server blocks and verify `proxy_pass` |
-| Flask container exits | Review `docker compose logs web` |
-| MySQL is unhealthy | Inspect MySQL logs, credentials, and health-check configuration |
-| Health endpoint returns HTTP 503 | Check database connectivity and Flask logs |
-| Public IP is unreachable | Check the EC2 security group, Nginx status, and host firewall |
-| Port 5000 is unavailable | Inspect local listening ports and Docker port bindings |
-| Tasks disappear | Verify the named volume and whether it was removed |
 
 Useful diagnostic commands:
 
