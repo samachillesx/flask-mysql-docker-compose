@@ -4,6 +4,8 @@ services:
     container_name: flask-app
     ports:
       - "5000:5000"
+      # Using for production-only, with this app can't be accessed directly except through nginx.
+      # - "127.0.0.1:5000:5000" 
     environment:
       MYSQL_HOST: ${MYSQL_HOST}
       MYSQL_PORT: ${MYSQL_PORT}
