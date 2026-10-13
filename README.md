@@ -1,6 +1,6 @@
 # Flask + MySQL Two-Tier Application | Docker Compose & AWS EC2
 
-A containerized Flask web application backed by MySQL, deployed to an AWS EC2 instance using Docker Compose and Nginx as a reverse proxy.
+I document a containerized Flask web application backed by MySQL, deployed to an AWS EC2 instance using Docker Compose and Nginx as a reverse proxy.
 
 This project demonstrates the deployment and operation of a multi-container application, including service communication, environment-based configuration, persistent database storage, application health checks, and Linux server administration.
 
@@ -57,7 +57,7 @@ The application was deployed successfully to an AWS EC2 instance and verified th
 
 - **Cloud:** Amazon Web Services (AWS)
 - **Compute:** Amazon EC2
-- **Operating system:** Amazon Linux 2023
+- **Operating system:** Ubuntu 22.0 LTS
 - **Application:** Python and Flask
 - **Database:** MySQL 8.0
 - **Containerization:** Docker
@@ -65,29 +65,6 @@ The application was deployed successfully to an AWS EC2 instance and verified th
 - **Web server / reverse proxy:** Nginx
 - **Application server:** Gunicorn
 - **Version control:** Git and GitHub
-
-## Repository Structure
-
-```text
-flask-mysql-docker-compose/
-├── app/
-│   ├── app.py
-│   ├── config.py
-│   ├── templates/
-│   │   └── index.html
-│   └── static/
-│       └── style.css
-├── mysql/
-│   └── init.sql
-├── Dockerfile
-├── docker-compose.yml
-├── requirements.txt
-├── .env.example
-├── .gitignore
-└── README.md
-```
-
-The `.env` file is created locally or on the deployment server and is intentionally excluded from version control.
 
 ## Key Implementation Details
 
@@ -135,17 +112,15 @@ Install the following tools:
 
 - Python 3.12 or a compatible version
 - Docker Engine
-- Docker Compose plugin
-- Git
+- Docker Compose v2 plugin
+- Nginx, and Git
 
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/flask-mysql-docker-compose.git
+git clone https://github.com/samachillesx/flask-mysql-docker-compose.git
 cd flask-mysql-docker-compose
 ```
-
-Replace `YOUR_USERNAME` with your GitHub username.
 
 ### 2. Configure Environment Variables
 
@@ -178,6 +153,8 @@ Ensure the values used by Docker Compose and the application are consistent.
 docker compose up -d --build
 ```
 
+![Container Build](./screenshots/container-build.png)
+
 This builds the application image, creates the required containers and network, and starts the services.
 
 ### 4. Verify the Containers
@@ -206,6 +183,8 @@ Open:
 http://localhost:5000
 ```
 
+![Web App](./screenshots/web-app.png)
+
 Check application and database connectivity:
 
 ```bash
@@ -229,6 +208,8 @@ The application was deployed to an AWS EC2 instance running Amazon Linux 2023.
 7. Configure the EC2 security group to permit the required inbound traffic.
 8. Validate the application through its public IP address and health endpoint.
 
+![EC2 Instance](./screenshots/ec2-instance.png)
+
 ### Network and Security Configuration
 
 The intended deployment access model is:
@@ -243,6 +224,8 @@ The intended deployment access model is:
 
 Security group rules and host firewall settings should follow the same principle of limiting access to only what is required.
 
+![Network Config](./screenshots/network-config.png)
+
 ### Accessing the Deployed Application
 
 Open the EC2 instance's public IPv4 address in a browser:
@@ -251,7 +234,7 @@ Open the EC2 instance's public IPv4 address in a browser:
 http://EC2_PUBLIC_IP
 ```
 
-Replace `EC2_PUBLIC_IP` with the instance's actual public IP address.
+![Live App](./screenshots/live-app.png)
 
 The application was successfully accessed through this endpoint after configuring Nginx to proxy requests to Flask.
 
@@ -380,7 +363,6 @@ HTTPS and additional production hardening remain planned improvements.
 
 **Sam Achilles**
 
-Cloud Computing | DevOps | Infrastructure | Application Deployment
+Cloud Engineering | DevOps | Infrastructure | Application Deployment
 
 GitHub: [My GitHub Profile](https://github.com/samachillesx)
-
