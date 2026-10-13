@@ -54,7 +54,7 @@ This project demonstrates practical DevOps skills in cloud infrastructure provis
 7. Configure the network and security group.
 8. Launch the instance.
 
-> Instance pricing and free-tier eligibility depend on your AWS account, region, and current AWS terms. Confirm these before launching.
+![EC2 Instance](.screenshots/ec2-instance.png)
 
 ### 1.2 Configure the Security Group
 
