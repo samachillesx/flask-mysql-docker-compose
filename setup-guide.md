@@ -218,6 +218,10 @@ COPY app/ .
 # Expose the application port
 EXPOSE 5000
 
+# Use this for local development
+# CMD ["python", "app.py"]
+
+# Gunicorn, a Python web server used to run Python web applications
 # Run the application using Gunicorn
 CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "2", "app:app"]
 ```
